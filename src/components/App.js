@@ -1,16 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { fetechPosts } from '../actions/posts';
-import { PostsList, Navbar } from './'; //This is coming from index.js from components
+import { Home, Navbar, Page404, Login } from './'; //This is coming from index.js from components
 
 //dummy Routes
 
-const Login = () => <div>Login</div>;
+const Logout = () => <div>LogOut</div>;
 const SignUp = () => <div>SignUp</div>;
-const Home = () => <div>Home</div>;
 
 class App extends React.Component {
   componentDidMount() {
@@ -23,23 +22,23 @@ class App extends React.Component {
       <Router>
         <div>
           <Navbar />
-          {/* <PostsList posts={posts} /> */}
 
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/signup">SignUp</Link>
-            </li>
-          </ul>
-
-          <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={SignUp} />
+          <Switch>
+            {' '}
+            {/*Switch==>f any path found at first time it won't go for another Routes*/}
+            {/* Route to Home Page */}
+            <Route
+              exact //return true if it exacty on the path
+              path="/" //path to home page
+              render={(props) => {
+                return <Home {...props} posts={posts} />;
+              }}
+            />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/logout" component={Logout} />
+            <Route exact path="/signup" component={SignUp} />
+            <Route component={Page404} />
+          </Switch>
         </div>
       </Router>
     );
