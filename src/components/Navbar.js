@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; //this library is used for Routing Purpose (Express)
 
 class Navbar extends Component {
   render() {

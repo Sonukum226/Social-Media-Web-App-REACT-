@@ -3,7 +3,7 @@ import { UPDATE_POSTS } from './actionType';
 
 export function fetechPosts() {
   return (dispatch) => {
-    const url = APIUrls.fetchPosts();
+    const url = APIUrls.fetchPosts(); //this urls coming from helper urls
     fetch(url)
       .then((response) => {
         return response.json();

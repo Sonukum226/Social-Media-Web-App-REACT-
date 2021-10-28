@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { login } from '../actions/auth';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     // this.emailInputRef = React.createRef();
     // this.passwordInputRef = React.createRef();
+
+    //here state is defined of eamil ans password
     this.state = {
       email: '',
       password: '',
@@ -13,12 +17,13 @@ class Login extends Component {
 
   handleEmailchange = (e) => {
     this.setState({
-      email: e.target.value,
+      email: e.target.value, //retrive the email
     });
   };
+
   handlePasswordchange = (e) => {
     this.setState({
-      password: e.target.value,
+      password: e.target.value, //retrive the password
     });
   };
 
@@ -27,12 +32,20 @@ class Login extends Component {
     // console.log('this.emailInputRef', this.emailInputRef);
     // console.log('this.passwordInputRef', this.passwordInputRef);
     console.log('this.state', this.state);
+    const { email, password } = this.state;
+
+    if (email && password) {
+      //if there email and password then dispatch the action
+      this.props.dispatch(login(email, password));
+    }
   };
 
   render() {
+    const { error, inProgress } = this.props.auth; //this auth is coming from reducer
     return (
       <form className="login-form">
         <span className="login-signup-header">Log in</span>
+        {error && <div className="alert-error-dailog">{error}</div>}
         <div className="field">
           <input
             type="email"
@@ -54,11 +67,25 @@ class Login extends Component {
           />
         </div>
         <div className="field">
-          <button onClick={this.handleFormSubmit}>LogIn</button>
+          {inProgress ? (
+            <button onClick={this.handleFormSubmit} disabled={inProgress}>
+              Logging in....
+            </button>
+          ) : (
+            <button onClick={this.handleFormSubmit} disabled={inProgress}>
+              LogIn
+            </button>
+          )}
         </div>
       </form>
     );
   }
 }
 
-export default Login;
+function maStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default connect(maStateToProps)(Login);
