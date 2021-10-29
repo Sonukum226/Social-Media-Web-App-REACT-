@@ -1,6 +1,15 @@
 import { APIUrls } from '../helpers/urls';
 import { getFromBody } from '../helpers/utils';
-import { LOGIN_FAILED, LOGIN_START, LOGIN_SUCCESS } from './actionType';
+import {
+  AUTHENTICATE_USER,
+  LOGIN_FAILED,
+  LOGIN_START,
+  LOGIN_SUCCESS,
+  LOG_OUT,
+  SIGNUP_FAILED,
+  SIGNUP_START,
+  SIGNUP_SUCCESS,
+} from './actionType';
 
 //this will execute when login is start
 export function startLogin() {
@@ -25,9 +34,10 @@ export function loginFailed(errorMessage) {
   };
 }
 
+//FOR LOGIN
 export function login(email, password) {
   return (dispatch) => {
-    dispatch(startLogin()); //to set my progress
+    dispatch(startLogin()); //to set my progress for login
     const url = APIUrls.login();
     fetch(url, {
       method: 'POST',
@@ -62,3 +72,68 @@ Attaches callbacks for the resolution and/or rejection of the Promise.
 
 @returns — A Promise for the completion of which ever callback is executed.
 */
+
+// for signup
+
+export function signup(email, password, confirmPassword, name) {
+  return (dispatch) => {
+    const url = APIUrls.signup();
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: getFromBody({
+        //getting information
+        email,
+        password,
+        confirm_password: confirmPassword,
+        name,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        //do something
+        if (data.success) {
+          //if success
+          localStorage.setItem('token', data.data.token);
+          dispatch(signupSuccessful(data.data.user));
+          return;
+        }
+        dispatch(signupFailed(data.message)); //if failed
+      });
+  };
+}
+
+export function startSignup() {
+  return {
+    type: SIGNUP_START,
+  };
+}
+
+export function signupSuccessful(user) {
+  return {
+    type: SIGNUP_SUCCESS,
+    user,
+  };
+}
+
+export function signupFailed(error) {
+  return {
+    type: SIGNUP_FAILED,
+    error,
+  };
+}
+
+export function authenticate_user(user) {
+  return {
+    type: AUTHENTICATE_USER,
+    user,
+  };
+}
+
+export function logoutUser() {
+  return {
+    type: LOG_OUT,
+  };
+}

@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { fetechPosts } from '../actions/posts'; //coming from action post
-import { Home, Navbar, Page404, Login } from './'; //This is coming from index.js from components
+import { Home, Navbar, Page404, Login, Register } from './'; //This is coming from index.js from components
 
 //dummy Routes
 const Logout = () => <div>LogOut</div>;
-const SignUp = () => <div>SignUp</div>;
+// const SignUp = () => <div>SignUp</div>;
 
 class App extends React.Component {
   //Called immediately after a component is mounted. Setting state here will trigger re-rendering.
@@ -35,7 +35,7 @@ class App extends React.Component {
             />
             <Route exact path="/login" component={Login} />
             <Route exact path="/logout" component={Logout} />
-            <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/signup" component={Register} />
             <Route component={Page404} />
           </Switch>
         </div>
