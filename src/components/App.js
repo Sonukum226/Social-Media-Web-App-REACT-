@@ -8,9 +8,8 @@ import { Home, Navbar, Page404, Login, Register } from './'; //This is coming fr
 import jwt_decode from 'jwt-decode';
 import { authenticate_user } from '../actions/auth';
 
-//dummy Routes
+//
 const Logout = () => <div>LogOut</div>;
-// const SignUp = () => <div>SignUp</div>;
 
 class App extends React.Component {
   //Called immediately after a component is mounted. Setting state here will trigger re-rendering.

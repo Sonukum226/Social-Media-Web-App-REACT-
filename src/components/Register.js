@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { signup, startSignup } from '../actions/auth';
+import { Redirect } from 'react-router';
+import { clearAuthState, signup, startSignup } from '../actions/auth';
 
 class Register extends Component {
   constructor(props) {
@@ -11,6 +12,10 @@ class Register extends Component {
       name: '',
       confirmPassword: '',
     };
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(clearAuthState());
   }
 
   handleInputChange = (field, value) => {
@@ -30,7 +35,13 @@ class Register extends Component {
   };
 
   render() {
-    const { inProgress, error } = this.props.auth; //this auth is coming from reducer
+    const { inProgress, error, isLoggedin } = this.props.auth; //this auth is coming from reducer
+
+    if (isLoggedin) {
+      //if the user is Signed in then redirect to the home page
+      return <Redirect to="/" />;
+    }
+
     return (
       <div className="login-form">
         <span className="login-signup-header"> Signup</span>

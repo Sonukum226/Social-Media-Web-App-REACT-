@@ -2,6 +2,7 @@ import { APIUrls } from '../helpers/urls';
 import { getFromBody } from '../helpers/utils';
 import {
   AUTHENTICATE_USER,
+  CLEAR_AUTH_STATE,
   LOGIN_FAILED,
   LOGIN_START,
   LOGIN_SUCCESS,
@@ -52,6 +53,7 @@ export function login(email, password) {
 
         if (data.success) {
           //dispatch action to save user
+          localStorage.setItem('token', data.data.token);
           dispatch(loginSuccessful(data.data.user));
           return;
         }
@@ -96,7 +98,6 @@ export function signup(email, password, confirmPassword, name) {
         //do something
         if (data.success) {
           //if success
-          localStorage.setItem('token', data.data.token);
           dispatch(signupSuccessful(data.data.user));
           return;
         }
@@ -135,5 +136,11 @@ export function authenticate_user(user) {
 export function logoutUser() {
   return {
     type: LOG_OUT,
+  };
+}
+
+export function clearAuthState() {
+  return {
+    type: CLEAR_AUTH_STATE,
   };
 }
