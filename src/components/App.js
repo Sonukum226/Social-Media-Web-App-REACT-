@@ -1,6 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { fetechPosts } from '../actions/posts'; //coming from action post
@@ -8,8 +13,20 @@ import { Home, Navbar, Page404, Login, Register } from './'; //This is coming fr
 import jwt_decode from 'jwt-decode';
 import { authenticate_user } from '../actions/auth';
 
-//
-const Logout = () => <div>LogOut</div>;
+const setting = () => <div>Setting</div>; // dummy route
+
+const PrivateRoute = (privateRouteProps) => {
+  const { isLoggedin, path, component: Component } = privateRouteProps;
+
+  return (
+    <Route
+      path={path}
+      render={(props) => {
+        return isLoggedin ? <Component {...props} /> : <Redirect to="/login" />;
+      }}
+    />
+  );
+};
 
 class App extends React.Component {
   //Called immediately after a component is mounted. Setting state here will trigger re-rendering.
@@ -35,7 +52,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { posts } = this.props;
+    const { posts, auth } = this.props;
     return (
       <Router>
         <div>
@@ -52,8 +69,12 @@ class App extends React.Component {
               }}
             />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/logout" component={Logout} />
             <Route exact path="/signup" component={Register} />
+            <PrivateRoute
+              path="/setting"
+              component={setting}
+              isLoggedin={auth.isLoggedin}
+            />
             <Route component={Page404} />
           </Switch>
         </div>
@@ -65,6 +86,7 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     posts: state.posts,
+    auth: state.auth,
   };
 }
 
