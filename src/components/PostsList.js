@@ -32,7 +32,7 @@ class PostsList extends Component {
                 </div>
                 <div className="post-comments-icon">
                   <img
-                    src="https://image.flaticon.com/icons/svg/1380/1380338.svg"
+                    src="https://cdn-icons.flaticon.com/png/512/2076/premium/2076218.png?token=exp=1635564836~hmac=c454c4209bcf05c1f016fdd63ef33508"
                     alt="comments-icon"
                   />
                   <span>{post.comments.length}</span>
