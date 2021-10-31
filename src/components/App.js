@@ -9,11 +9,10 @@ import {
 import PropTypes from 'prop-types';
 
 import { fetechPosts } from '../actions/posts'; //coming from action post
-import { Home, Navbar, Page404, Login, Register } from './'; //This is coming from index.js from components
+import { Home, Navbar, Page404, Login, Register, Setting } from './'; //This is coming from index.js from components
 import jwt_decode from 'jwt-decode';
 import { authenticate_user } from '../actions/auth';
-
-const setting = () => <div>Setting</div>; // dummy route
+import { getAuthTokenFromLocalStorage } from '../helpers/utils';
 
 const PrivateRoute = (privateRouteProps) => {
   const { isLoggedin, path, component: Component } = privateRouteProps;
@@ -22,7 +21,18 @@ const PrivateRoute = (privateRouteProps) => {
     <Route
       path={path}
       render={(props) => {
-        return isLoggedin ? <Component {...props} /> : <Redirect to="/login" />;
+        return isLoggedin ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: {
+                from: props.location,
+              },
+            }}
+          />
+        );
       }}
     />
   );
@@ -33,7 +43,7 @@ class App extends React.Component {
   componentDidMount() {
     this.props.dispatch(fetechPosts());
 
-    const token = localStorage.getItem('token');
+    const token = getAuthTokenFromLocalStorage();
 
     if (token) {
       const user = jwt_decode(token);
@@ -72,7 +82,7 @@ class App extends React.Component {
             <Route exact path="/signup" component={Register} />
             <PrivateRoute
               path="/setting"
-              component={setting}
+              component={Setting}
               isLoggedin={auth.isLoggedin}
             />
             <Route component={Page404} />

@@ -1,8 +1,10 @@
 import { APIUrls } from '../helpers/urls';
-import { getFromBody } from '../helpers/utils';
+import { getAuthTokenFromLocalStorage, getFromBody } from '../helpers/utils';
 import {
   AUTHENTICATE_USER,
   CLEAR_AUTH_STATE,
+  EDIT_USER_FAILED,
+  EDIT_USER_SUCCESSFUL,
   LOGIN_FAILED,
   LOGIN_START,
   LOGIN_SUCCESS,
@@ -142,5 +144,58 @@ export function logoutUser() {
 export function clearAuthState() {
   return {
     type: CLEAR_AUTH_STATE,
+  };
+}
+
+export function editUserSuccessful(user) {
+  return {
+    type: EDIT_USER_SUCCESSFUL,
+    user,
+  };
+}
+
+export function editUserFailed(error) {
+  return {
+    type: EDIT_USER_FAILED,
+    error,
+  };
+}
+
+//if the user edit the name ans password
+export function editUser(name, password, confirmPassword, userId) {
+  return (dispatch) => {
+    const url = APIUrls.editProfile();
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`,
+      },
+      body: getFromBody({
+        name,
+        password,
+        confirm_password: confirmPassword,
+        id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Edit Profile data', data);
+
+        if (data.success) {
+          dispatch(editUserSuccessful(data.data.user));
+
+          //jwt token is important to update after editing name beacause if not updated then token remain same as prevoiusly
+          //and at the time of login it will show error
+          if (data.data.token) {
+            localStorage.setItem('token', data.data.token);
+          }
+
+          return;
+        }
+
+        dispatch(editUserFailed(data.message));
+      });
   };
 }

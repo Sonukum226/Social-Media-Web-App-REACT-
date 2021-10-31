@@ -48,12 +48,14 @@ class Login extends Component {
   render() {
     const { error, inProgress, isLoggedin } = this.props.auth; //this auth is coming from reducer
 
+    const { from } = this.props.location.state || { pathanme: '/' };
+
     console.log('logged in', isLoggedin);
 
     if (isLoggedin) {
       //if the user is loged in then redirect to the home page
 
-      return <Redirect to="/" />;
+      return <Redirect to={from} />;
     }
 
     return (
