@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { clearAuthState, editUser, editUserFailed } from '../actions/auth';
+import { clearAuthState, editUser } from '../actions/auth';
 
 class Setting extends Component {
   constructor(props) {

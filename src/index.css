@@ -308,7 +308,7 @@ nav .nav-links ul li:hover {
 /* HOME AND FRIENDSLIST COMPONENT */
 .home {
   padding: 20px 50px;
-  /* display: flex; */
+  display: flex;
   width: 80%;
   margin: 0 auto;
 }
