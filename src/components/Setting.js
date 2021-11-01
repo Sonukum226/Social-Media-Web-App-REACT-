@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { clearAuthState, editUser } from '../actions/auth';
+import { clearAuthState, editUser, editUserFailed } from '../actions/auth';
 
 class Setting extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class Setting extends Component {
     const { password, confirmPassword, name } = this.state;
 
     const { user } = this.props.auth;
-    //add error handling
+
     this.props.dispatch(editUser(name, password, confirmPassword, user._id));
   };
 

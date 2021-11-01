@@ -9,7 +9,15 @@ import {
 import PropTypes from 'prop-types';
 
 import { fetechPosts } from '../actions/posts'; //coming from action post
-import { Home, Navbar, Page404, Login, Register, Setting } from './'; //This is coming from index.js from components
+import {
+  Home,
+  Navbar,
+  Page404,
+  Login,
+  Register,
+  Setting,
+  UserProfile,
+} from './'; //This is coming from index.js from components
 import jwt_decode from 'jwt-decode';
 import { authenticate_user } from '../actions/auth';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
@@ -83,6 +91,11 @@ class App extends React.Component {
             <PrivateRoute
               path="/setting"
               component={Setting}
+              isLoggedin={auth.isLoggedin}
+            />
+            <PrivateRoute
+              path="/user/:userId"
+              component={UserProfile}
               isLoggedin={auth.isLoggedin}
             />
             <Route component={Page404} />
