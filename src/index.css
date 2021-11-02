@@ -319,7 +319,8 @@ nav .nav-links ul li:hover {
   background: #fff;
   margin-left: 50px;
   flex-grow: 0.2;
-  height: 50vh;
+  height: 75vh;
+  width: 80vh;
   box-sizing: border-box;
   margin-top: 20px;
   border: 1px solid #e0e0e0;
