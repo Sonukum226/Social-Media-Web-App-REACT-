@@ -1,3 +1,12 @@
-This is a clone of a Facebook(similar) chat app using React.
+Social Networking mobile app similar to Facebook in React.
+Native web application for my SocialApp-MERN (web) project.
 
-(Currently Working on it)
+Features
+ Authentication using JWT.
+ Edit your profile.
+ AddFriend / RemoveFriend  .
+ create posts.
+ user can do comments.
+ Like / Unlike posts.
+ Personal chat with users.
+
